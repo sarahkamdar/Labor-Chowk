@@ -1,0 +1,37 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information - Labour Chowk</title>
+    <link rel="stylesheet" href="customerinfo.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-hammer" viewBox="0 0 16 16">
+                        <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5 5 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334"/>
+                    </svg>   
+                    Labour <span>Chowk</span>
+                </h1>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="info-container">
+            <h1>Customer Information</h1>
+            <form action="submit_customer_info" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required><br>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </main>
+</body>
+</html>

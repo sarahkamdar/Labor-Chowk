@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labour Chowk - Login</title>
+    <link rel="stylesheet" href="li.css">
+    <script>
+        function showForm(formType) {
+            document.getElementById('customer-form').classList.remove('active');
+            document.getElementById('worker-form').classList.remove('active');
+            if (formType === 'customer') {
+                document.getElementById('customer-form').classList.add('active');
+            } else {
+                document.getElementById('worker-form').classList.add('active');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Labour Chowk - Login</h2>
+        <div class="option-buttons">
+            <button onclick="showForm('customer')">Customer</button>
+            <button onclick="showForm('worker')">Worker</button>
+            <br>
+            
+        </div>
+        
+        <div id="customer-form" class="form-container">
+            <form id="customer-login-form">
+                <label for="customer-phone">Phone Number:</label>
+                <input type="tel" id="customer-phone" name="customer-phone" required>
+                
+                <label for="customer-password">Password:</label>
+                <input type="password" id="customer-password" name="customer-password" required>
+                
+                <label for="labour-type">Type of Labour:</label>
+                <select id="labour-type" name="labour-type" required>
+                    <option value="">Select Labour Type</option>
+                    <option value="plumber">Plumber</option>
+                    <option value="electrician">Electrician</option>
+                    <option value="carpenter">Carpenter</option>
+                    <option value="painter">Painter</option>
+                    <option value="gardener">Gardener</option>
+                    <option value="others">Others</option>
+                </select>
+                
+                <button type="submit">Login as Customer</button>
+            </form>
+        </div>
+        
+        <div id="worker-form" class="form-container">
+            <form id="worker-login-form">
+                <label for="worker-phone">Phone Number:</label>
+                <input type="tel" id="worker-phone" name="worker-phone" required>
+                
+                <label for="worker-password">Password:</label>
+                <input type="password" id="worker-password" name="worker-password" required>
+                
+                <button type="submit">Login as Worker</button>
+            </form>
+        </div>
+        <p>Don't have an account? <a href="signup.html">Sign Up here</a></p>
+    </div>
+</body>
+</html>

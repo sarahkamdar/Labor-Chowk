@@ -1,0 +1,104 @@
+/* Basic reset and styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container styling */
+.container {
+    width: 80%;
+    max-width: 500px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Heading styling */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff9900;
+}
+
+/* Option buttons styling */
+.option-buttons {
+    display: flex;
+    justify-content: 20px;
+    margin-bottom: 20px;
+    
+}
+
+.option-buttons button {
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.option-buttons button:hover {
+    background-color: #ff9900;
+}
+
+/* Submit button styling */
+button[type="submit"] {
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #ff9900;
+}
+
+/* Form container styling */
+.form-container {
+    display: none;
+    margin-top: 20px;
+}
+
+.form-container.active {
+    display: block;
+}
+
+/* Label and input field styling */
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Paragraph and link styling */
+p {
+    margin-top: 20px;
+}
+
+a {
+    color: #ff9900;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
