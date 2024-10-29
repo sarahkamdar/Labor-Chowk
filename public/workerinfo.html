@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Information - Labour Chowk</title>
+    <link rel="stylesheet" href=".\CSS files\workerinfo.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Worker Information</h2>
+        <form action="/workers" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <!-- <label for="skill">Skill:</label> -->
+            <!-- <input type="text" id="skill" name="skill" required> -->
+
+            <label for="experience">How long they have worked (in years):</label>
+            <input type="number" id="experience" name="experience" required min="0">
+
+            <label for="wages">Wages (per hour/day):</label>
+            <input type="text" id="wages" name="wages" required>
+
+            <label for="address1">Work Address1:</label>
+            <input type="text" id="address1" name="address1" required>
+
+            <!-- <label for="address2">Work Address2:</label>
+            <input type="text" id="address2" name="address2" required> -->
+
+            <label for="pincode">Pincode:</label>
+            <input type="number" id="pincode" name="pincode" required>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="workType">Select your work type:</label>
+            <select id="workType" name="workType" required>
+                    <option value="">Select your work type</option>
+                    <option value="plumber">Plumber</option>
+                    <option value="electrician">Electrician</option>
+                    <option value="carpenter">Carpenter</option>
+                    <option value="painter">Painter</option>
+                    <option value="gardener">Gardener</option>
+                    <option value="others">Others</option>
+                </select>
+                
+                <label for="aadharNumber">Aadhar number:</label>
+                <input type="number" id="aadharNumber" name="aadharNumber" required>
+            
+    
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+        
+</body>
+</html>
+
+

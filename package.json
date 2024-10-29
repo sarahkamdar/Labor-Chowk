@@ -1,0 +1,20 @@
+{
+  "name": "labor-chowk",
+  "version": "1.0.0",
+  "description": "The Labour Chowk System is a digital platform designed to address critical issues faced by daily wage laborers and employers. It aims to provide greater visibility, efficiency, transparency, and fairness within the labor market by connecting daily wage laborers with potential employers, digitizing the traditional labor market, and ensuring better working conditions and fair wages.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "hbs": "^4.2.0",
+    "mongoose": "^8.7.3",
+    "nodemon": "^3.1.7",
+    "path": "^0.12.7"
+  }
+}
