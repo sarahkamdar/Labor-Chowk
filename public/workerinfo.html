@@ -3,42 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Information - Labour Chowk</title>
+    <title>Worker Information</title>
     <link rel="stylesheet" href=".\CSS files\workerinfo.css">
 </head>
 <body>
     <div class="container">
         <h2>Worker Information</h2>
-        <form action="/workers" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+        <form id="workerForm" action="/workers" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <div class="error-message" id="nameError"></div>
+            </div>
 
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+                <div class="error-message" id="phoneError"></div>
+            </div>
 
-            <!-- <label for="skill">Skill:</label> -->
-            <!-- <input type="text" id="skill" name="skill" required> -->
+            <div class="form-group">
+                <label for="experience">Experience (in years):</label>
+                <input type="number" id="experience" name="experience" min="0" required>
+                <div class="error-message" id="experienceError"></div>
+            </div>
 
-            <label for="experience">How long they have worked (in years):</label>
-            <input type="number" id="experience" name="experience" required min="0">
+            <div class="form-group">
+                <label for="wages">Wages (per hour/day):</label>
+                <input type="text" id="wages" name="wages" required>
+                <div class="error-message" id="wagesError"></div>
+            </div>
 
-            <label for="wages">Wages (per hour/day):</label>
-            <input type="text" id="wages" name="wages" required>
+            <div class="form-group">
+                <label for="address1">Work Address:</label>
+                <input type="text" id="address1" name="address1" required>
+                <div class="error-message" id="addressError"></div>
+            </div>
 
-            <label for="address1">Work Address1:</label>
-            <input type="text" id="address1" name="address1" required>
+            <div class="form-group">
+                <label for="pincode">Pincode:</label>
+                <input type="text" id="pincode" name="pincode" required>
+                <div class="error-message" id="pincodeError"></div>
+            </div>
 
-            <!-- <label for="address2">Work Address2:</label>
-            <input type="text" id="address2" name="address2" required> -->
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+                <div class="error-message" id="cityError"></div>
+            </div>
 
-            <label for="pincode">Pincode:</label>
-            <input type="number" id="pincode" name="pincode" required>
-
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" required>
-
-            <label for="workType">Select your work type:</label>
-            <select id="workType" name="workType" required>
+            <div class="form-group">
+                <label for="workType">Select your work type:</label>
+                <select id="workType" name="workType" required>
                     <option value="">Select your work type</option>
                     <option value="plumber">Plumber</option>
                     <option value="electrician">Electrician</option>
@@ -47,17 +63,56 @@
                     <option value="gardener">Gardener</option>
                     <option value="others">Others</option>
                 </select>
-                
-                <label for="aadharNumber">Aadhar number:</label>
-                <input type="number" id="aadharNumber" name="aadharNumber" required>
-            
-    
+                <div class="error-message" id="workTypeError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="aadharNumber">Aadhar Number:</label>
+                <input type="text" id="aadharNumber" name="aadharNumber" required>
+                <div class="error-message" id="aadharError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
 
             <button type="submit">Submit</button>
         </form>
     </div>
-        
+
+    <script>
+        document.getElementById('workerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(elem => {
+                elem.style.display = 'none';
+            });
+
+            let hasError = false;
+
+            // Password validation
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                document.getElementById('confirmPasswordError').style.display = 'block';
+                hasError = true;
+            }
+
+            if (!hasError) {
+                this.submit();
+            }
+        });
+    </script>
 </body>
 </html>
-
-
