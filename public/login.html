@@ -28,40 +28,80 @@
         </div>
         
         <div id="customer-form" class="form-container">
-            <form id="customer-login-form">
-                <label for="customer-phone">Phone Number:</label>
-                <input type="tel" id="customer-phone" name="customer-phone" required>
-                
-                <label for="customer-password">Password:</label>
-                <input type="password" id="customer-password" name="customer-password" required>
-                
-                <label for="labour-type">Type of Labour:</label>
-                <select id="labour-type" name="labour-type" required>
-                    <option value="">Select Labour Type</option>
-                    <option value="plumber">Plumber</option>
-                    <option value="electrician">Electrician</option>
-                    <option value="carpenter">Carpenter</option>
-                    <option value="painter">Painter</option>
-                    <option value="gardener">Gardener</option>
-                    <option value="others">Others</option>
-                </select>
-                
-                <button type="submit">Login as Customer</button>
-            </form>
-        </div>
-        
-        <div id="worker-form" class="form-container">
-            <form id="worker-login-form">
-                <label for="worker-phone">Phone Number:</label>
-                <input type="tel" id="worker-phone" name="worker-phone" required>
-                
-                <label for="worker-password">Password:</label>
-                <input type="password" id="worker-password" name="worker-password" required>
-                
-                <button type="submit">Login as Worker</button>
-            </form>
-        </div>
+            <input type="text" id="customer-phone" placeholder="Phone Number">
+            <input type="password" id="customer-password" placeholder="Password">
+            <button id="customer-login-btn">Login as Customer</button>
+          </div>
+          
+          <div id="worker-form" class="form-container">
+            <input type="text" id="worker-phone" placeholder="Phone Number">
+            <input type="password" id="worker-password" placeholder="Password">
+            <button id="worker-login-btn">Login as Worker</button>
+          </div>
+
         <p>Don't have an account? <a href="signup.html">Sign Up here</a></p>
     </div>
 </body>
+
+<script>
+    // Add event listeners to the login buttons
+    document.getElementById('customer-login-btn').addEventListener('click', loginCustomer);
+    document.getElementById('worker-login-btn').addEventListener('click', loginWorker);
+  
+    async function loginCustomer() {
+      const phone = document.getElementById('customer-phone').value;
+      const password = document.getElementById('customer-password').value;
+  
+      try {
+        const response = await fetch('/login/customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ phone, password })
+        });
+  
+        if (response.ok) {
+          const { token, redirectUrl } = await response.json();
+          localStorage.setItem('authToken', token);
+          window.location.href = redirectUrl;
+        } else {
+          const { error } = await response.json();
+          alert(error);
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('An error occurred during login');
+      }
+    }
+  
+    async function loginWorker() {
+      const phone = document.getElementById('worker-phone').value;
+      const password = document.getElementById('worker-password').value;
+  
+      try {
+        const response = await fetch('/login/worker', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ phone, password })
+        });
+  
+        if (response.ok) {
+          const { token, redirectUrl } = await response.json();
+          localStorage.setItem('authToken', token);
+          window.location.href = redirectUrl;
+        } else {
+          const { error } = await response.json();
+          alert(error);
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('An error occurred during login');
+      }
+    }
+  </script>
 </html>
+
+

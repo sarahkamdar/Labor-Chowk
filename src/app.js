@@ -2,6 +2,11 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
+// Import bcrypt for password hashing and comparison
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
 
 require("./db/conn");
 const Worker = require("./models/labor");
@@ -14,6 +19,10 @@ app.use(express.urlencoded({extended:true}));
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../public", "index.html"));
+});
+
+app.get("/home", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public", "home.html"));
 });
 
 app.post("/workers", async (req, res) => {
@@ -69,7 +78,6 @@ app.post("/workers", async (req, res) => {
             workType: req.body.workType,
             aadharNumber: req.body.aadharNumber,
             password: req.body.password,
-            confirmPassword: req.body.confirmPassword
         });
 
         // Save worker
@@ -150,7 +158,6 @@ app.post("/customers", async (req, res) => {
             phone: req.body.phone,
             address: req.body.address,
             password: req.body.password,
-            confirmPassword: req.body.confirmPassword
         });
         
         // Save customer
@@ -188,4 +195,62 @@ app.post("/customers", async (req, res) => {
 
 app.listen(port, () => {
     console.log(`server is running at port no ${port}`);
+});
+
+
+// Login routes
+app.post('/login/customer', async (req, res) => {
+    try {
+        const { phone, password } = req.body;
+        
+        // Find the customer
+        const customer = await Customer.findOne({ phone });
+        
+        if (!customer) {
+            return res.status(401).json({ error: 'Invalid phone number or password' });
+        }
+
+        // Compare passwords using bcrypt
+        const isMatch = await bcrypt.compare(password, customer.password);
+        
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Invalid phone number or password' });
+        }
+
+        // Generate token if credentials are correct
+        const token = await customer.generateAuthToken();
+        res.status(200).json({ token, redirectUrl: '/home' });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'An error occurred during login' });
+    }
+});
+  
+app.post('/login/worker', async (req, res) => {
+    try {
+        const { phone, password } = req.body;
+        
+        // Find the worker
+        const worker = await Worker.findOne({ phone });
+        
+        if (!worker) {
+            return res.status(401).json({ error: 'Invalid phone number or password' });
+        }
+
+        // Compare passwords using bcrypt
+        const isMatch = await bcrypt.compare(password, worker.password);
+        
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Invalid phone number or password' });
+        }
+
+        // Generate token if credentials are correct
+        const token = await worker.generateAuthToken();
+        res.status(200).json({ token, redirectUrl: '/home' });
+
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'An error occurred during login' });
+    }
 });

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const bcryptjs = require("bcryptjs");
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
 
 const customerSchema = new mongoose.Schema({
     name: {
@@ -27,36 +28,50 @@ const customerSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minlength: [8, "Password must be at least 8 characters long"]
     },
-    confirmPassword: {
-        type: String,
-        required: [true, "Please confirm your password"],
-        validate: {
-            validator: function(value) {
-                return value === this.password;
-            },
-            message: "Passwords do not match"
-        }
-    },
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+
+    tokens: [{
+        token: {
+          type: String,
+          required: true
+        }
+      }]
+
 });
 
-// Middleware to hash password before saving the customer
-customerSchema.pre("save", async function (next) {
-    try {
-        // Only hash the password if it has been modified (or is new)
-        if (!this.isModified("password")) return next();
 
-        // Generate a salt and hash the password
-        const salt = await bcryptjs.genSalt(10);
-        this.password = await bcryptjs.hash(this.password, salt);
-        next();
-    } catch (error) {
-        next(error);
+
+customerSchema.pre("save", async function(next) {
+    if (this.isModified("password")) {
+        try {
+            this.password = await bcrypt.hash(this.password, 10);
+            // Remove confirmPassword field before saving
+            this.confirmPassword = undefined;
+        } catch (error) {
+            return next(error);
+        }
     }
+    next();
 });
+  
+  // Password comparison method
+  customerSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password);
+  };
+  
+  // JWT token generation method
+  customerSchema.methods.generateAuthToken = async function() {
+    const customer = this;
+    const secretKey = process.env.JWT_SECRET || "fallback_secret_key"; // Use a hardcoded fallback if JWT_SECRET is not set
+    const token = jwt.sign({ _id: customer._id.toString() }, secretKey, { expiresIn: '1h' });
+    customer.tokens = customer.tokens.concat({ token });
+    await customer.save();
+    return token;
+};
+
 
 // Middleware to handle MongoDB validation errors
 customerSchema.post("save", (error, doc, next) => {

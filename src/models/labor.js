@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const bcryptjs = require("bcryptjs");
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+
 
 const workerSchema = new mongoose.Schema({
     name: {
@@ -54,43 +56,49 @@ const workerSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minlength: [8, "Password must be at least 8 characters long"]
     },
-    confirmPassword: {
-        type: String,
-        required: [true, "Please confirm your password"]
-    },
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    
+    tokens: [{
+        token: {
+          type: String,
+          required: true
+        }
+      }]
+
 });
 
-// Add password validation middleware
-workerSchema.pre('validate', function(next) {
-    if (this.isModified('password') || this.isNew) {
-        if (this.password !== this.confirmPassword) {
-            this.invalidate('confirmPassword', 'Passwords do not match');
+// Middleware to hash password before saving
+workerSchema.pre("save", async function(next) {
+    if (this.isModified("password")) {
+        try {
+            this.password = await bcrypt.hash(this.password, 10);
+            // Remove confirmPassword field if it exists
+            this.confirmPassword = undefined;
+        } catch (error) {
+            return next(error);
         }
     }
     next();
 });
+  
+  // Password comparison method
+  workerSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password);
+  };
+  
+  // JWT token generation method
+workerSchema.methods.generateAuthToken = async function() {
+    const worker = this;
+    const secretKey = process.env.JWT_SECRET || "fallback_secret_key"; // Use a fallback secret if JWT_SECRET is not set
+    const token = jwt.sign({ _id: worker._id.toString() }, secretKey, { expiresIn: '1h' });
+    worker.tokens = worker.tokens.concat({ token });
+    await worker.save();
+    return token;
+};
 
-// Middleware to hash password before saving
-workerSchema.pre('save', async function(next) {
-    try {
-        if (!this.isModified('password')) {
-            return next();
-        }
-
-        const salt = await bcryptjs.genSalt(10);
-        this.password = await bcryptjs.hash(this.password, salt);
-        
-        // Clear the confirmPassword field
-        this.confirmPassword = undefined;
-        next();
-    } catch (error) {
-        next(error);
-    }
-});
 
 // Error handling middleware
 workerSchema.post('save', function(error, doc, next) {
