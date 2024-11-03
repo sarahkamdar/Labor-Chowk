@@ -6,7 +6,24 @@ const port = process.env.PORT || 3000;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
+const authenticateToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1] || req.cookies?.token;
+    
+    if (!token) {
+        return res.redirect('/');
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.redirect('/');
+    }
+};
 
 require("./db/conn");
 const Worker = require("./models/labor");
@@ -191,6 +208,15 @@ app.post("/customers", async (req, res) => {
             error: "An unexpected error occurred while registering the customer"
         });
     }
+});
+
+app.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.json({ success: true });
+});
+
+app.get('/check-auth', authenticateToken, (req, res) => {
+    res.json({ authenticated: true });
 });
 
 app.listen(port, () => {

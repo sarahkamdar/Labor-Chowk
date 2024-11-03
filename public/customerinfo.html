@@ -57,23 +57,20 @@
             </form>
         </div>
     </main>
+    <script>
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+    
+        confirmPassword.addEventListener('input', () => {
+            if (password.value !== confirmPassword.value) {
+                passwordError.textContent = 'Passwords do not match';
+                passwordError.style.display = 'block';
+            } else {
+                passwordError.textContent = '';
+                passwordError.style.display = 'none';
+            }
+        });
+    </script>
 </body>
-
-<script>
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirmPassword');
-    const passwordError = document.getElementById('passwordError');
-
-    confirmPassword.addEventListener('input', () => {
-        if (password.value !== confirmPassword.value) {
-            passwordError.textContent = 'Passwords do not match';
-            passwordError.style.display = 'block';
-        } else {
-            passwordError.textContent = '';
-            passwordError.style.display = 'none';
-        }
-    });
-</script>
-
-
 </html>
